@@ -1,14 +1,13 @@
+
 namespace Gate.Domain.Models
 {
-    public class UserInfo
+    public class ContactInfo : BaseInfo
     {
         public int Id { get; set; }
-        public string Username { get; set; }
-        public string Description { get; set; }
         public string Email { get; set; }
-        public bool? Active { get; set; } = true;
-        public string Password { get; set; }
-        public bool IsAdmin { get; set; } = false;
+        public string Phone { get; set; }
+        public int PersonId { get; set; }
+        public PersonInfo Person { get; set; }
         public int CreatedUser { get; set; }
         public int UpdatedUser { get; set; }
         public DateTime CreatedAt { get; set; }

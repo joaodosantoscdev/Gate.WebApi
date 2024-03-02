@@ -10,7 +10,6 @@ namespace Gate.Application.Profiles
     {
       CreateMap<RegisterUserRequest, UserInfo>().ReverseMap();
       CreateMap<RegisterUserRequest, EmployeeInfo>().ReverseMap();
-      CreateMap<CompanyRequestInfo, CompanyInfo>().ReverseMap();
     }
   }
 }
