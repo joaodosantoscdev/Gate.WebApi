@@ -1,5 +1,7 @@
 using System.Text;
 using Gate.Identity.Configurations;
+using Gate.Identity.Context;
+using Gate.Identity.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -20,13 +22,28 @@ public static class AuthenticationSetup
           opt.Expiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.Expiration)] ?? "0");
       });
 
+    //   services.AddIdentityCore<ApplicationUser>(options =>
+    //     {
+    //         options.Password.RequireDigit = false;
+    //         options.Password.RequireNonAlphanumeric = false;
+    //         options.Password.RequireLowercase = false;
+    //         options.Password.RequireUppercase = false;
+    //         options.Password.RequiredLength = 4;
+    //     })
+    //     .AddRoles<ApplicationRole>()
+    //     .AddRoleManager<RoleManager<ApplicationRole>>()
+    //     .AddSignInManager<SignInManager<ApplicationUser>>()
+    //     .AddRoleValidator<RoleValidator<ApplicationRole>>()
+    //     .AddEntityFrameworkStores<IdentityDataContext>()
+    //     .AddDefaultTokenProviders();
+
       services.Configure<IdentityOptions>(opt =>
       {
-          opt.Password.RequireDigit = true;
-          opt.Password.RequireLowercase = true;
-          opt.Password.RequireNonAlphanumeric = true;
-          opt.Password.RequireUppercase = true;
-          opt.Password.RequiredLength = 6;
+            opt.Password.RequireDigit = false;
+            opt.Password.RequireNonAlphanumeric = false;
+            opt.Password.RequireLowercase = false;
+            opt.Password.RequireUppercase = false;
+            opt.Password.RequiredLength = 4;
       });
 
       var tokenValidationParameters = new TokenValidationParameters

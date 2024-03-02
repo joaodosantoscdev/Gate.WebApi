@@ -2,13 +2,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Gate.Application.DTOs.Request;
 using Gate.Application.DTOs.Response;
-using Gate.Application.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Gate.Identity.Configurations;
 using Microsoft.AspNetCore.Identity;
 using Gate.Domain.Models;
-using System.Runtime.InteropServices;
 using Gate.Identity.Models;
+using Gate.Application.DTOs.Response.Interfaces;
+using Gate.Identity.BusinessLogic.Interfaces;
 
 namespace Gate.Identity.Service
 {
@@ -27,12 +27,19 @@ namespace Gate.Identity.Service
             _jwtOptions = jwtOptions.Value;
         }
 
-        public async Task<RegisterUserResponse> RegisterIdentityUser(RegisterUserRequest registerUserRequest, int companyId) 
+        public async Task<IBaseResponse<RegisterUserResponse>> RegisterIdentityUser(RegisterUserRequest registerUserRequest) 
         {
+            if (await HasIdentityUser(registerUserRequest.Email))
+                return BaseResponse.CreateErrorResponse<RegisterUserResponse>($"Usuário com E-mail {registerUserRequest.Email} já registrado.");
+
             var identityUser = new ApplicationUser()
             {
                 UserName = registerUserRequest.Email,
+                Description = registerUserRequest.Description,
+                PhoneNumber = registerUserRequest.Phone,
                 Email = registerUserRequest.Email,
+                Birthdate = registerUserRequest.Birthdate,
+                CreationDate = DateTime.Now,
                 EmailConfirmed = true,
             };
 
@@ -46,7 +53,7 @@ namespace Gate.Identity.Service
             else
                 registerUserResponse.UserInfo = await GetByEmailAsync(identityUser.Email);
             
-            return registerUserResponse;
+            return BaseResponse.CreateSuccessResponse(registerUserResponse);
         }
 
         public async Task<UserLoginResponse> Login(UserLoginRequest userLoginRequest) 
@@ -113,7 +120,7 @@ namespace Gate.Identity.Service
             var claims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
 
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti,  new Guid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ToString()));

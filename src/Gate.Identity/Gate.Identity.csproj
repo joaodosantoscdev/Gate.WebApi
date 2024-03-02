@@ -20,5 +20,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Gate.Application\Gate.Application.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations/" />
+  </ItemGroup>
   
 </Project>

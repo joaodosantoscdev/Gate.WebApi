@@ -1,4 +1,3 @@
-using System.Security.AccessControl;
 namespace Gate.Domain.Models
 {
     public class EmployeeInfo

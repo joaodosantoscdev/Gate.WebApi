@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Gate.Domain.Models;
-using Gate.Application.Services.Interfaces;
 using Gate.Application.DTOs.Request;
 using Microsoft.AspNetCore.Authorization;
+using Gate.Application.DTOs.Response;
+using Gate.Identity.BusinessLogic.Interfaces;
 
 namespace Gate.Api.Controllers
 {
@@ -10,42 +10,10 @@ namespace Gate.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly IIdentityService _identityService;
-        public UserController(IUserService userService, IIdentityService identityService)
+        public UserController(IIdentityService identityService)
         {
-            _userService = userService;
             _identityService = identityService;
-        }
-
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id)
-        {
-            try
-            {
-                var result = _userService.GetById(id);
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet("GetAll")]
-        public ActionResult GetAll()
-        {
-            try
-            {
-                var result = _userService.GetAll();
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
         }
         
         [AllowAnonymous]
@@ -54,7 +22,7 @@ namespace Gate.Api.Controllers
         {
             try
             {
-                var result = await _userService.RegisterUser(userRequest);
+                var result = await _identityService.RegisterIdentityUser(userRequest);
 
                 return Ok(result);
             }
@@ -66,11 +34,11 @@ namespace Gate.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("Login")]
-        public IActionResult Login(UserLoginRequest userRequest)
+        public async Task<ActionResult<UserLoginResponse>> Login(UserLoginRequest userRequest)
         {
             try
             {
-                var result = _identityService.Login(userRequest);
+                var result = await _identityService.Login(userRequest);
 
                 return Ok(result);
             }
