@@ -1,6 +1,6 @@
 namespace Gate.Domain.Models
 {
-    public class AccessInfo : BaseInfo
+    public class AccessInfo : Entity
     {
         public int Id { get; set; }
         public DateTime Date {get; set;}

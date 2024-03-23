@@ -2,7 +2,7 @@
 
 namespace Gate.Domain.Models
 {
-    public class GuestInfo : PersonInfo, BaseInfo
+    public class GuestInfo : PersonInfo
     {
         public int ResidentId { get; set; }
         public string Comment { get; set; }

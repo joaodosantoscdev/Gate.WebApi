@@ -9,7 +9,6 @@ namespace Gate.Application.Profiles
     public MapperProfile()
     {
       CreateMap<RegisterUserRequest, UserInfo>().ReverseMap();
-      CreateMap<RegisterUserRequest, EmployeeInfo>().ReverseMap();
     }
   }
 }

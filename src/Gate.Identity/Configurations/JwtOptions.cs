@@ -7,6 +7,7 @@ namespace Gate.Identity.Configurations
         public string  Issuer { get; set; }
         public string Audience { get; set; }
         public SigningCredentials SigningCredentials { get; set; }
-        public int Expiration { get; set; }
+        public int AccessTokenExpiration { get; set; }
+        public int RefreshTokenExpiration { get; set; }
     }
 }

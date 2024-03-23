@@ -5,6 +5,9 @@ using Gate.Identity.Models;
 using Gate.Identity.Service;
 using Gate.Persistence.Context;
 using Gate.Identity.BusinessLogic.Interfaces;
+using Gate.Application.Services;
+using Gate.Persistence.Repositories.Interfaces;
+using Gate.Persistence.Repositories;
 
 namespace Gate.Api.DependencyInjection;
 public static class NativeInjectorConfig
@@ -20,13 +23,14 @@ public static class NativeInjectorConfig
       opt => opt.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection))
     );
 
-    services.AddIdentity<ApplicationUser, ApplicationRole>()
-      .AddRoleManager<RoleManager<ApplicationRole>>()
-      .AddSignInManager<SignInManager<ApplicationUser>>()
-      .AddRoleValidator<RoleValidator<ApplicationRole>>()
+    services.AddIdentity<ApplicationUser, IdentityRole<int>>()
       .AddEntityFrameworkStores<IdentityDataContext>()
-      .AddDefaultTokenProviders();
+      .AddDefaultTokenProviders()
+      .AddRoles<IdentityRole<int>>();
 
     services.AddScoped<IIdentityService, IdentityService>();
+    services.AddScoped<IComplexService, ComplexService>();
+
+    services.AddScoped<IComplexRepository, ComplexRepository>();
   }
 }

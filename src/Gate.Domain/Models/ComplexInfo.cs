@@ -1,7 +1,7 @@
 
 namespace Gate.Domain.Models
 {
-    public class ComplexInfo : BaseInfo
+    public class ComplexInfo : Entity
     {
         public int Id { get; set; }
         public string Description { get; set; }

@@ -1,7 +1,5 @@
 using System.Text;
 using Gate.Identity.Configurations;
-using Gate.Identity.Context;
-using Gate.Identity.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -12,30 +10,16 @@ public static class AuthenticationSetup
   public static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)
   {
       var jwtAppSettingOptions = configuration.GetSection(nameof(JwtOptions));
-      var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JwtSettings:SecurityKey").Value));
+      var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JwtOptions:SecurityKey").Value));
 
       services.Configure<JwtOptions>(opt =>
       {
           opt.Issuer = jwtAppSettingOptions[nameof(JwtOptions.Issuer)];
           opt.Audience = jwtAppSettingOptions[nameof(JwtOptions.Audience)];
           opt.SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
-          opt.Expiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.Expiration)] ?? "0");
+          opt.RefreshTokenExpiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.RefreshTokenExpiration)] ?? "0");
+          opt.AccessTokenExpiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.AccessTokenExpiration)] ?? "0");
       });
-
-    //   services.AddIdentityCore<ApplicationUser>(options =>
-    //     {
-    //         options.Password.RequireDigit = false;
-    //         options.Password.RequireNonAlphanumeric = false;
-    //         options.Password.RequireLowercase = false;
-    //         options.Password.RequireUppercase = false;
-    //         options.Password.RequiredLength = 4;
-    //     })
-    //     .AddRoles<ApplicationRole>()
-    //     .AddRoleManager<RoleManager<ApplicationRole>>()
-    //     .AddSignInManager<SignInManager<ApplicationUser>>()
-    //     .AddRoleValidator<RoleValidator<ApplicationRole>>()
-    //     .AddEntityFrameworkStores<IdentityDataContext>()
-    //     .AddDefaultTokenProviders();
 
       services.Configure<IdentityOptions>(opt =>
       {

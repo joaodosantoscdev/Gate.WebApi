@@ -1,6 +1,6 @@
 namespace Gate.Domain.Models
 {
-    public abstract class PersonInfo
+    public abstract class PersonInfo : Entity
     {
         public int Id { get; set; }
         public string Name { get; set; }

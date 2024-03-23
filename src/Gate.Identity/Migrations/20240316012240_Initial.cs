@@ -41,13 +41,12 @@ namespace Gate.Identity.Migrations
                     Description = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Birthdate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UserImage = table.Column<string>(type: "longtext", nullable: false)
+                    UserImage = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedUser = table.Column<int>(type: "int", nullable: false),
-                    UpdatedUser = table.Column<int>(type: "int", nullable: false),
+                    CreatedUser = table.Column<int>(type: "int", nullable: true),
+                    UpdatedUser = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)

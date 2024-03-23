@@ -1,6 +1,6 @@
 namespace Gate.Domain.Models
 {
-    public class UnitInfo
+    public class UnitInfo : Entity
     {
         public int Id { get; set; }
         public string Description { get; set; }

@@ -1,18 +1,18 @@
 namespace Gate.Domain.Models
 {
-    public struct BaseInfoResponse
+    public struct EntityResponse
     {
         public bool Success { get; set; }
         public string Message { get; set; } = string.Empty;
 
-        public BaseInfoResponse() => Success = false;
+        public EntityResponse() => Success = false;
 
-        public BaseInfoResponse ReturnSuccess() { 
-            return new BaseInfoResponse { Success = true };
+        public EntityResponse ReturnSuccess() { 
+            return new EntityResponse { Success = true };
         }
 
-        public BaseInfoResponse ReturnError(string message) { 
-            return new BaseInfoResponse { Message = message };
+        public EntityResponse ReturnError(string message) { 
+            return new EntityResponse { Message = message };
         } 
     }
 }

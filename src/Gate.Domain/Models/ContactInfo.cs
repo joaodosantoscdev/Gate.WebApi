@@ -1,7 +1,7 @@
 
 namespace Gate.Domain.Models
 {
-    public class ContactInfo : BaseInfo
+    public class ContactInfo : Entity
     {
         public int Id { get; set; }
         public string Email { get; set; }
