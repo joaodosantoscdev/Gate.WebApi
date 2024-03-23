@@ -100,7 +100,7 @@ namespace Gate.Identity.Service
             };
 
             return userInfo;
-        } g
+        }
 
         private async Task<UserLoginResponse> GenerateToken(string email)
         {
