@@ -6,8 +6,9 @@ using Gate.Identity.BusinessLogic.Interfaces;
 
 namespace Gate.Api.Controllers
 {
-    [Route("api/[controller]")]
+    
     [ApiController]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IIdentityService _identityService;

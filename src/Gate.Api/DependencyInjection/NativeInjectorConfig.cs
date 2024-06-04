@@ -6,8 +6,9 @@ using Gate.Identity.Service;
 using Gate.Persistence.Context;
 using Gate.Identity.BusinessLogic.Interfaces;
 using Gate.Application.Services;
-using Gate.Persistence.Repositories.Interfaces;
 using Gate.Persistence.Repositories;
+using Gate.Application.Services.Interfaces;
+using Gate.Persistence.Repositories.Interfaces;
 
 namespace Gate.Api.DependencyInjection;
 public static class NativeInjectorConfig
@@ -29,8 +30,18 @@ public static class NativeInjectorConfig
       .AddRoles<IdentityRole<int>>();
 
     services.AddScoped<IIdentityService, IdentityService>();
+    services.AddScoped<IAccessService, AccessService>();
+    services.AddScoped<IContactService, ContactService>();
+    services.AddScoped<IResidentService, ResidentService>();
+    services.AddScoped<IUnitService, UnitService>();
     services.AddScoped<IComplexService, ComplexService>();
+    services.AddScoped<IPlaceService, PlaceService>();
 
+    services.AddScoped<IAccessRepository, AccessRepository>();
+    services.AddScoped<IContactRepository, ContactRepository>();
+    services.AddScoped<IResidentRepository, ResidentRepository>();
+    services.AddScoped<IUnitRepository, UnitRepository>();
     services.AddScoped<IComplexRepository, ComplexRepository>();
+    services.AddScoped<IPlaceRepository, PlaceRepository>();
   }
 }

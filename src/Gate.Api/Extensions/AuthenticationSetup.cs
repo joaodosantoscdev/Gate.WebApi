@@ -9,61 +9,61 @@ public static class AuthenticationSetup
 {
   public static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)
   {
-      var jwtAppSettingOptions = configuration.GetSection(nameof(JwtOptions));
-      var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JwtOptions:SecurityKey").Value));
+        var jwtAppSettingOptions = configuration.GetSection(nameof(JwtOptions));
+        var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("JwtOptions:SecurityKey").Value));
 
-      services.Configure<JwtOptions>(opt =>
-      {
-          opt.Issuer = jwtAppSettingOptions[nameof(JwtOptions.Issuer)];
-          opt.Audience = jwtAppSettingOptions[nameof(JwtOptions.Audience)];
-          opt.SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
-          opt.RefreshTokenExpiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.RefreshTokenExpiration)] ?? "0");
-          opt.AccessTokenExpiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.AccessTokenExpiration)] ?? "0");
-      });
+        services.Configure<JwtOptions>(options =>
+        {
+            options.Issuer = jwtAppSettingOptions[nameof(JwtOptions.Issuer)];
+            options.Audience = jwtAppSettingOptions[nameof(JwtOptions.Audience)];
+            options.SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
+            options.AccessTokenExpiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.AccessTokenExpiration)] ?? "0");
+            options.RefreshTokenExpiration = int.Parse(jwtAppSettingOptions[nameof(JwtOptions.RefreshTokenExpiration)] ?? "0");
+        });
 
-      services.Configure<IdentityOptions>(opt =>
-      {
-            opt.Password.RequireDigit = false;
-            opt.Password.RequireNonAlphanumeric = false;
-            opt.Password.RequireLowercase = false;
-            opt.Password.RequireUppercase = false;
-            opt.Password.RequiredLength = 4;
-      });
+        services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequiredLength = 6;
+        });
 
-      var tokenValidationParameters = new TokenValidationParameters
-      {
-          ValidateIssuer = true,
-          ValidIssuer = configuration.GetSection("JwtOptions:Issuer").Value,
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = configuration.GetSection("JwtOptions:Issuer").Value,
 
-          ValidateAudience = true,
-          ValidAudience = configuration.GetSection("JwtOptions:Audience").Value,
+            ValidateAudience = true,
+            ValidAudience = configuration.GetSection("JwtOptions:Audience").Value,
 
-          ValidateIssuerSigningKey = true,
-          IssuerSigningKey = securityKey,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = securityKey,
 
-          RequireExpirationTime = true,
-          ValidateLifetime = true,
+            RequireExpirationTime = true,
+            ValidateLifetime = true,
 
-          ClockSkew = TimeSpan.Zero
-      };
+            ClockSkew = TimeSpan.Zero
+        };
 
-      services.AddAuthentication(opt =>
-      {
-          opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-          opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-      }).AddJwtBearer(opt => 
-      {
-          opt.TokenValidationParameters = tokenValidationParameters;
-      });
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options => 
+        {
+            options.TokenValidationParameters = tokenValidationParameters;
+        });
   }
 
-//   public static void AddAuthorizationPolicies(this IServiceCollection services)
-//   {
-//       // services.AddSingleton<IAuthorizationHandler, HorarioComercialHandler>();
-//       // services.AddAuthorization(opt =>
-//       // {
-//       //     opt.AddPolicy(Policies.HorarioComercial, policy =>
-//       //         policy.Requirements.Add(new HorarioComercialRequirement()));
-//       // });
-//   }
+  public static void AddAuthorizationPolicies(this IServiceCollection services)
+  {
+      // services.AddSingleton<IAuthorizationHandler, HorarioComercialHandler>();
+      // services.AddAuthorization(opt =>
+      // {
+      //     opt.AddPolicy(Policies.HorarioComercial, policy =>
+      //         policy.Requirements.Add(new HorarioComercialRequirement()));
+      // });
+  }
 }

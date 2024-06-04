@@ -11,6 +11,7 @@ using Gate.Application.DTOs.Response.Interfaces;
 using Gate.Identity.BusinessLogic.Interfaces;
 using Gate.Identity.Constants;
 using Gate.Identity.Context;
+using Newtonsoft.Json;
 
 namespace Gate.Identity.Service
 {
@@ -148,6 +149,7 @@ namespace Gate.Identity.Service
             };
 
             // Adicionar a instância de ApplicationUserRole ao contexto e salvar as alterações
+            _context.UserRoles.Add(userRole);
             await _context.SaveChangesAsync();
         }
 
@@ -158,9 +160,10 @@ namespace Gate.Identity.Service
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Jti,  new Guid().ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti,  Guid.NewGuid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()));
+            claims.Add(new Claim("userInfo", JsonConvert.SerializeObject(user)));
 
             foreach (var role in roles)
                 claims.Add(new Claim("role", role));

@@ -1,4 +1,3 @@
-using Gate.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Gate.Identity.Models

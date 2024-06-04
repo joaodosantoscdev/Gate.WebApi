@@ -25,7 +25,8 @@ namespace Gate.Api.Extensions
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT"
                 });
                 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement()

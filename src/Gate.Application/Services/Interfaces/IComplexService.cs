@@ -3,5 +3,8 @@ using Gate.Domain.Models;
 
 namespace Gate.Application.Services
 {
-    public interface IComplexService : IBaseService<ComplexInfo> { }
+    public interface IComplexService : IBaseService<ComplexInfo> 
+    {
+        Task<List<ComplexInfo>> GetAllFullAsync();
+    }
 }

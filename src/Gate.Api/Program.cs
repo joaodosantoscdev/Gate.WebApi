@@ -4,13 +4,14 @@ using Gate.Api.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors();
+builder.Services.AddControllers();
+builder.Services.AddRouting();
+builder.Services.AddVersioning();
+builder.Services.ConfigureSwagger();
 builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.ConfigureAutoMapper(builder.Configuration);
 builder.Services.RegisterServices(builder.Configuration);
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddVersioning();
-builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
 
@@ -39,9 +40,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors(x => x.AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowAnyOrigin());
+app.UseCors(builder => builder
+    .SetIsOriginAllowed(origin => true)
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 app.MapControllers();
 

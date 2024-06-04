@@ -24,7 +24,7 @@ namespace Gate.Persistence.Repositories
         {
             Context.Add(obj);
             await Context.SaveChangesAsync();
-            return obj.Id;
+            return obj;
         }
 
         public virtual async Task UpdateAsync(TEntity obj)
